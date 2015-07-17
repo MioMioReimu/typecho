@@ -21,8 +21,8 @@
 	// material design 图标点击效果
 	  Waves.displayEffect();
 </script>
-<link rel="stylesheet" href="skin/styles/darkula.css">
-<script type="javascript" src="skin/highlight.pack.js"></script>
+<link rel="stylesheet" href="<?php $this->options->themeUrl('skin/styles/darkula.css'); ?>" >
+<script src="<?php $this->options->themeUrl('skin/highlight.pack.js'); ?>"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>
