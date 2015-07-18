@@ -3,6 +3,8 @@
 <script src="<?php $options->adminStaticUrl('js', 'pagedown.js?v=' . $suffixVersion); ?>"></script>
 <script src="<?php $options->adminStaticUrl('js', 'pagedown-extra.js?v=' . $suffixVersion); ?>"></script>
 <script src="<?php $options->adminStaticUrl('js', 'diff.js?v=' . $suffixVersion); ?>"></script>
+<link rel="stylesheet" href="<?php $options->adminStaticUrl('js', 'katex/katex.min.css'); ?>" >
+<script src="<?php $options->adminStaticUrl('js', 'katex/katex.min.js?v='.$suffixVersion); ?>"></script>
 <script>
 $(document).ready(function () {
     var textarea = $('#text'),
@@ -61,8 +63,9 @@ $(document).ready(function () {
         editor = new Markdown.Editor(converter, '', options),
         diffMatch = new diff_match_patch(), last = '', preview = $('#wmd-preview'),
         mark = '@mark' + Math.ceil(Math.random() * 100000000) + '@',
-        span = '<span class="diff" />',
+        span = '<span class="diff" ></span>',
         cache = {};
+
 
     Markdown.Extra.init(converter, {
         'extensions' : ["tables", "fenced_code_gfm", "def_list", "attr_list", "footnotes", "strikethrough", "newlines"]
@@ -90,6 +93,17 @@ $(document).ready(function () {
             html = '<div class="summary">' + summary + '</div>'
                 + '<div class="details">' + details + '</div>';
         }
+        html = html.replace(/(?:\$\$|\$\[)(.*?)(?:\$\[|\$\$)/ig, function(all, latex, src) {
+
+            //p latex
+            if(all.substring(0,2) == "$$" && all.substring(all.length-2, all.length) == "$$") {
+                return katex.renderToString(latex , {displayMode : true});
+
+            } else if(all.substring(0, 2) == "$[" && all.substring(all.length-2, all.length) == "$[") {
+                return katex.renderToString(latex , {displayMode : false});
+            }
+            return src;
+        });
 
 
         var diffs = diffMatch.diff_main(last, html);
@@ -163,6 +177,8 @@ $(document).ready(function () {
                 + tag + ' : ' + $.trim(src) + '</div>';
         });
 
+
+
         return html;
     });
 
@@ -196,8 +212,13 @@ $(document).ready(function () {
         });
 
         $('.cache', preview).resize(cacheResize).each(cacheResize);
-        
+
+
         var changed = $('.diff', preview).parent();
+        var diffInMathNode = $(".diff").parents(".katex");
+        if(diffInMathNode[0]) {
+            changed = diffInMathNode.parent();
+        }
         if (!changed.is(preview)) {
             changed.css('background-color', 'rgba(255,230,0,0.5)');
             to = setTimeout(function () {
@@ -216,6 +237,7 @@ $(document).ready(function () {
                 scrolled = true;
             }
         }
+
     });
 
     <?php Typecho_Plugin::factory('admin/editor-js.php')->markdownEditor($content); ?>

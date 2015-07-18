@@ -1,6 +1,6 @@
 <?php
 /**
- * material风格响应式博客模板,最大宽度为1200px<br />同时支持IE8+，iPad,iPhone,Andriod等移动设备<br />欢迎与我交流QQ：373345619
+ * material风格响应式博客模板,最大宽度为1200px<br />同时支持IE8+，iPad,iPhone,Andriod等移动设备<br />
  * 
  * @package Bytecats 
  * @author bytecats
