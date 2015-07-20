@@ -106,9 +106,9 @@ $(document).ready(function () {
                 var s = katex.renderToString(latex , {displayMode : renderMode});
                 return s;
             } catch(e) {
-                return src;
+                return all;
             }
-            return src;
+            return all;
         });
 
 
