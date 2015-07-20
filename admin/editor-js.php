@@ -94,13 +94,19 @@ $(document).ready(function () {
                 + '<div class="details">' + details + '</div>';
         }
         html = html.replace(/(?:\$\$|\$\[)(.*?)(?:\$\[|\$\$)/ig, function(all, latex, src) {
-
+            var renderMode = false;
             //p latex
             if(all.substring(0,2) == "$$" && all.substring(all.length-2, all.length) == "$$") {
-                return katex.renderToString(latex , {displayMode : true});
+                renderMode = true;
 
             } else if(all.substring(0, 2) == "$[" && all.substring(all.length-2, all.length) == "$[") {
-                return katex.renderToString(latex , {displayMode : false});
+                renderMode = false;
+            }
+            try {
+                var s = katex.renderToString(latex , {displayMode : renderMode});
+                return s;
+            } catch(e) {
+                return src;
             }
             return src;
         });
