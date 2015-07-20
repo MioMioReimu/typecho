@@ -70,7 +70,33 @@ $(document).ready(function () {
     Markdown.Extra.init(converter, {
         'extensions' : ["tables", "fenced_code_gfm", "def_list", "attr_list", "footnotes", "strikethrough", "newlines"]
     });
+    function html_encode(str)
+    {
+        var s = "";
+        if (str.length == 0) return "";
+        s = str.replace(/&/g, "&gt;");
+        s = s.replace(/</g, "&lt;");
+        s = s.replace(/>/g, "&gt;");
+        s = s.replace(/ /g, "&nbsp;");
+        s = s.replace(/\'/g, "&#39;");
+        s = s.replace(/\"/g, "&quot;");
+        s = s.replace(/\n/g, "<br>");
+        return s;
+    }
 
+    function html_decode(str)
+    {
+        var s = "";
+        if (str.length == 0) return "";
+        s = str.replace(/&gt;/g, "&");
+        s = s.replace(/&lt;/g, "<");
+        s = s.replace(/&gt;/g, ">");
+        s = s.replace(/&nbsp;/g, " ");
+        s = s.replace(/&#39;/g, "\'");
+        s = s.replace(/&quot;/g, "\"");
+        s = s.replace(/<br>/g, "\n");
+        return s;
+    }
     // 自动跟随
     converter.hooks.chain('postConversion', function (html) {
         // clear special html tags
@@ -94,7 +120,7 @@ $(document).ready(function () {
                 + '<div class="details">' + details + '</div>';
         }
         html = html.replace(/(?:\$\$|\$\[)(.*?)(?:\$\[|\$\$)/ig, function(all, latex, src) {
-            latex = $("").html(latex).text();
+            latex = html_decode(latex);
             var renderMode = false;
             //p latex
             if(all.substring(0,2) == "$$" && all.substring(all.length-2, all.length) == "$$") {
