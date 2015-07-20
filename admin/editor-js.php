@@ -94,6 +94,7 @@ $(document).ready(function () {
                 + '<div class="details">' + details + '</div>';
         }
         html = html.replace(/(?:\$\$|\$\[)(.*?)(?:\$\[|\$\$)/ig, function(all, latex, src) {
+            latex = $("").html(latex).text();
             var renderMode = false;
             //p latex
             if(all.substring(0,2) == "$$" && all.substring(all.length-2, all.length) == "$$") {
