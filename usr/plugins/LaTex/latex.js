@@ -1,29 +1,39 @@
-(function(global) {
-	var previousLatex = global.latex;
-
-	global.latex = {
-		parse: function(mark) {
-			if (!mark) {
-				return;
-			}
-
-			var $ = document.querySelectorAll.bind(document);
-			var nodes = $('code.lang-' + mark);
-			for (var i = 0, l = nodes.length; i < l; i++) {
-				var node = nodes[i];
-				var latex_image = document.createElement("img");
-				latex_image.src = "http://latex.codecogs.com/png.latex?" + node.innerHTML;
-				// replace with image
-				var parent = node.parentNode;
-				parent.insertBefore(latex_image, node);
-				parent.removeChild(node);
-			}
-
-		},
-		noConflict: function() {
-			global.latex = previousLatex;
-			return this;
-		}
+$(document).ready(function() {
+	function html_decode(str)
+	{
+		var s = "";
+		if (str.length == 0) return "";
+		s = str.replace(/&amp;/g, "&");
+		s = s.replace(/&lt;/g, "<");
+		s = s.replace(/&gt;/g, ">");
+		s = s.replace(/&nbsp;/g, " ");
+		s = s.replace(/&#39;/g, "\'");
+		s = s.replace(/&quot;/g, "\"");
+		s = s.replace(/<br>/g, "\n");
+		s = s.replace(/<br\/>/g, "\n");
+		return s;
 	}
+	var articles = $("article");
+	for(var i = 0; i < articles.length; i++) {
+		var articleDOM = articles[i]
+		articleDOM.innerHTML = articleDOM.innerHTML.replace(/(?:\$\$|\$\[)([\s\S]*?)(?:\$\[|\$\$)/ig, function(all, latex, src) {
+			latex = html_decode(latex);
+			var renderMode = false;
 
-})(this);
+			if(all.substring(0,2) == "$$" && all.substring(all.length-2, all.length) == "$$") {
+				renderMode = true;
+
+			} else if(all.substring(0, 2) == "$[" && all.substring(all.length-2, all.length) == "$[") {
+				renderMode = false;
+			}
+			try {
+				var s = katex.renderToString(latex , {displayMode : renderMode});
+				return s;
+			} catch(e) {
+				console.log(e);
+				return all;
+			}
+			return all;
+		});
+	}
+});
