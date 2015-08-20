@@ -34,15 +34,15 @@
 <script type="text/javascript">
     // material design 图标点击效果
     Waves.displayEffect();
-    renderMathInElement(
-        document.body,
-        {
-            delimiters: [
-                {left: "$$", right: "$$", display: true},
-                {left: "$[", right: "$[", display: false}
-            ]
-        }
-    );
+//    renderMathInElement(
+//        document.body,
+//        {
+//            delimiters: [
+//                {left: "$$", right: "$$", display: true},
+//                {left: "$[", right: "$[", display: false}
+//            ]
+//        }
+//    );
     $(document).ready(function() {
         function html_decode(str)
         {
