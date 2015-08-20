@@ -95,6 +95,7 @@ $(document).ready(function () {
         s = s.replace(/&#39;/g, "\'");
         s = s.replace(/&quot;/g, "\"");
         s = s.replace(/<br>/g, "\n");
+        s = s.replace(/<br\/>/g, "\n");
         return s;
     }
     // 自动跟随
@@ -125,7 +126,6 @@ $(document).ready(function () {
             //p latex
             if(all.substring(0,2) == "$$" && all.substring(all.length-2, all.length) == "$$") {
                 renderMode = true;
-
             } else if(all.substring(0, 2) == "$[" && all.substring(all.length-2, all.length) == "$[") {
                 renderMode = false;
             }
@@ -133,6 +133,7 @@ $(document).ready(function () {
                 var s = katex.renderToString(latex , {displayMode : renderMode});
                 return s;
             } catch(e) {
+                console.log(e);
                 return all;
             }
             return all;
