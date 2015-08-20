@@ -1,8 +1,8 @@
 <?php
 /**
- * LaTex 公式解析
+ * Highlight 语法高亮
  * 
- * @package LaTex
+ * @package Highlight
  * @author tlm
  * @version 1.0.0
  * @link
