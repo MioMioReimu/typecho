@@ -60,7 +60,6 @@ class LaTex_Plugin implements Typecho_Plugin_Interface
      * @return unknown
      */
     public static function footer() {
-        echo '<script type="text/javascript">latex.parse("'. $mark. '");</script>';
         echo '<script type="text/javascript" src="'. $this->options->adminStaticUrl('js', 'katex/katex.min.js'). '"></script';
         echo '<link rel="stylesheet" href="'. $this->options->adminStaticUrl('js', 'katex/katex.min.css'). '>';
         $jsUrl = Helper::options()->pluginUrl . '/LaTex/latex.js';
