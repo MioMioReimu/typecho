@@ -119,7 +119,7 @@ $(document).ready(function () {
             html = '<div class="summary">' + summary + '</div>'
                 + '<div class="details">' + details + '</div>';
         }
-        html = html.replace(/(?:\$\$|\$\[)(.*?)(?:\$\[|\$\$)/ig, function(all, latex, src) {
+        html = html.replace(/(?:\$\$|\$\[)([\s\S]*?)(?:\$\[|\$\$)/ig, function(all, latex, src) {
             latex = html_decode(latex);
             var renderMode = false;
             //p latex
