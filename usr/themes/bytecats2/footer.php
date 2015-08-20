@@ -20,30 +20,10 @@
         Modified by <a href="http://gogojob.net/">miomioreimu</a>
         <?php echo '加载耗时：',timer_stop(), ' s';?><?php endif;?>
 </footer><!-- end #footer -->
-<?php //$this->footer(); ?>
-
-<link rel="stylesheet" href="<?php $this->options->themeUrl('skin/styles/darkula.css'); ?>" >
-<script src="<?php $this->options->themeUrl('skin/highlight.pack.js'); ?>"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-<!--<script src="--><?php //$this->options->adminStaticUrl('js', 'katex/katex.min.js'); ?><!--">-->
-<!---->
-<!--</script>-->
-<!--<link rel="stylesheet" href="--><?php //$this->options->adminStaticUrl('js', 'katex/katex.min.css'); ?><!--" >-->
-<!--<script src="<?php $this->options->adminStaticUrl('js', 'katex/contrib/auto-render.min.js'); ?>">
-</script>-->
+<?php $this->footer(); ?>
 <script type="text/javascript">
     // material design 图标点击效果
     Waves.displayEffect();
-//    renderMathInElement(
-//        document.body,
-//        {
-//            delimiters: [
-//                {left: "$$", right: "$$", display: true},
-//                {left: "$[", right: "$[", display: false}
-//            ]
-//        }
-//    );
-
 </script>
 </body>
 </html>

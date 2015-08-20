@@ -7,7 +7,7 @@
  * @version 1.0.0
  * @link
  */
-class LaTex_Plugin implements Typecho_Plugin_Interface
+class Highlight_Plugin implements Typecho_Plugin_Interface
 {
     /**
      * 激活插件方法,如果激活失败,直接抛出异常
@@ -18,7 +18,7 @@ class LaTex_Plugin implements Typecho_Plugin_Interface
      */
     public static function activate()
     {
-        Typecho_Plugin::factory('Widget_Archive')->footer = array('LaTex_Plugin', 'footer');
+        Typecho_Plugin::factory('Widget_Archive')->footer = array('Highlight_Plugin', 'footer');
     }
     
     /**
@@ -60,13 +60,10 @@ class LaTex_Plugin implements Typecho_Plugin_Interface
      * @return unknown
      */
     public static function footer() {
-        echo '<script type="text/javascript" src=';
-        Helper::options()->adminStaticUrl('js', 'katex/katex.min.js');
-        echo '></script>';
-        echo '<link rel="stylesheet" href=';
-        Helper::options()->adminStaticUrl('js', 'katex/katex.min.css');
-        echo '>';
-        $jsUrl = Helper::options()->pluginUrl . '/LaTex/highlight.js';
+        $cssUrl = Helper::options()->pluginUrl . '/styles/darkula.css';
+        $jsUrl = Helper::options()->pluginUrl . '/highlight.pack.js';
         echo '<script type="text/javascript" src="'. $jsUrl .'"></script>';
+        echo '<link rel="stylesheet" href="'. $cssUrl .'">';
+        echo '<script>hljs.initHighlightingOnLoad();</script>';
     }
 }
