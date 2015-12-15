@@ -66,7 +66,7 @@ class LaTex_Plugin implements Typecho_Plugin_Interface
         echo '<link rel="stylesheet" href=';
         Helper::options()->adminStaticUrl('js', 'katex/katex.min.css');
         echo '>';
-        $jsUrl = Helper::options()->pluginUrl . '/LaTex/highlight.js';
+        $jsUrl = Helper::options()->pluginUrl . '/LaTex/latex.js';
         echo '<script type="text/javascript" src="'. $jsUrl .'"></script>';
     }
 }

@@ -156,17 +156,28 @@ class Widget_Metas_Category_List extends Widget_Abstract_Metas
             echo ' category-child';
             $this->levelsAlt(' category-level-odd', ' category-level-even');
         } else {
+            echo ' '.$categoryOptions->topItemClass;
             echo ' category-parent';
         }
-
         if ($this->mid == $this->parameter->current) {
-            echo ' category-active';
+            if ($this->levels == 0) {
+                echo ' ' . $categoryOptions->parentActive; 
+            } else {
+                echo ' ' . $categoryOptions->active;
+            }
         } else if (isset($this->_children[$this->mid]) && in_array($this->parameter->current, $this->_children[$this->mid])) {
-            echo ' category-parent-active';
+            echo ' ' . $categoryOptions->parentActive;
         }
-
-        echo '"><a href="' . $this->permalink . '">' . $this->name . '</a>';
-
+        echo '"><a ';
+        echo ' class="' . $categoryOptions->aClass .' a-level-' . $this->levels . '" ';
+        if ($categoryOptions->showURL || !$this->children) {
+            echo $categoryOptions->itemShowExternal . ' ';
+            echo ' href="' . $this->permalink . '" ';
+        } else {
+            echo $categoryOptions->itemNotShowExternal . ' ';
+        }
+        echo $categoryOptions->itemExternal ;
+        echo  '>' . $this->name . '</a>';
         if ($categoryOptions->showCount) {
             printf($categoryOptions->countTemplate, intval($this->count));
         }
@@ -176,10 +187,12 @@ class Widget_Metas_Category_List extends Widget_Abstract_Metas
         }
 
         if ($this->children) {
-            $this->treeViewCategories();
+            if ($this->levels < $categoryOptions->maxLevels) {
+                $this->treeViewCategories();
+            }
         }
 
-        echo '</li>';
+        echo '</' . $categoryOptions->itemTag . '>';
     }
 
     /**
@@ -272,6 +285,54 @@ class Widget_Metas_Category_List extends Widget_Abstract_Metas
         }
     }
 
+
+    /**
+     * listWithoutTopWrapTagCategories  
+     *
+     * @param $categoryOptions 输出选项
+     * @access public
+     * @return void
+     */
+    public function listWithoutTopWrapTagCategories($categoryOptions = NULL)
+    {
+        //初始化一些变量
+        $this->_categoryOptions = Typecho_Config::factory($categoryOptions);
+        $this->_categoryOptions->setDefault(array(
+            'topItemClass'      =>  '',
+            'wrapTag'           =>  'ul',
+            'wrapClass'         =>  '',
+            'itemTag'           =>  'li',
+            'itemClass'         =>  '',
+            'showURL'           =>  true,
+            'showCount'         =>  false,
+            'showFeed'          =>  false,
+            'countTemplate'     =>  '(%d)',
+            'feedTemplate'      =>  '<a href="%s">RSS</a>',
+            'maxLevels'         =>  2,
+            'itemExternal'      =>  '',
+            'itemShowExternal'  =>  '',
+            'itemNotShowExternal' => '',
+            'parentActive'      =>  'category-parent-active',
+            'active'            =>  'category-active',
+            'aClass'            =>  ''
+        ));
+
+        // 插件插件接口
+        $this->pluginHandle()->trigger($plugged)->listCategories($this->_categoryOptions, $this);
+
+        if (!$plugged) {
+            $this->stack = $this->getCategories($this->_top);
+            if ($this->have()) { 
+                while ($this->next()) {
+                    $this->treeViewCategoriesCallback();
+                }
+            }
+
+            $this->stack = $this->_map;
+        }
+    }
+
+
     /**
      * treeViewCategories  
      *
@@ -284,14 +345,23 @@ class Widget_Metas_Category_List extends Widget_Abstract_Metas
         //初始化一些变量
         $this->_categoryOptions = Typecho_Config::factory($categoryOptions);
         $this->_categoryOptions->setDefault(array(
+            'topItemClass'      =>  '',
             'wrapTag'           =>  'ul',
             'wrapClass'         =>  '',
             'itemTag'           =>  'li',
             'itemClass'         =>  '',
+            'showURL'           =>  true,
             'showCount'         =>  false,
             'showFeed'          =>  false,
             'countTemplate'     =>  '(%d)',
-            'feedTemplate'      =>  '<a href="%s">RSS</a>'
+            'feedTemplate'      =>  '<a href="%s">RSS</a>',
+            'maxLevels'         =>  2,
+            'itemExternal'      =>  '',
+            'itemShowExternal'  =>  '',
+            'itemNotShowExternal' => '',
+            'parentActive'      =>  'category-parent-active',
+            'active'            =>  'category-active',
+            'aClass'            =>  ''
         ));
 
         // 插件插件接口
